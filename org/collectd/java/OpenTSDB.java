@@ -24,7 +24,7 @@ public class OpenTSDB implements CollectdWriteInterface,
     CollectdInitInterface,
     CollectdConfigInterface
 {
-    private String      server = "localhost";
+    private String      server = "134.76.4.128";
     private String      port   = "4242";
     private PrintStream _out;
     private Socket      socket;
