@@ -83,7 +83,12 @@ public class OpenTSDB implements CollectdWriteInterface,
         pluginInstance = vl.getPluginInstance();
         type           = vl.getType();
         typeInstance   = vl.getTypeInstance();
-
+        // OpenTSDB metrics info
+	//see syslog in /var/log
+           Collectd.logInfo("*"+plugin);
+           Collectd.logInfo("**"+pluginInstance);
+           Collectd.logInfo("***"+type);
+           Collectd.logInfo("****"+typeInstance); 
         // FIXME: refactor to switch?
         if ( plugin != null && !plugin.isEmpty() ) {
             parts.add(plugin);
