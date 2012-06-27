@@ -9,7 +9,7 @@ Install
     # Install collectd.
     apt-get install collectd
     # Clone the plugin repo.
-    git clone git://github.com/auxesis/collectd-opentsdb.git
+    git clone git://github.com/ajehang/collectd-opentsdb.git
 
 
 Insert this into your `collectd.conf` (likely at `/etc/collectd/collectd.conf`):
