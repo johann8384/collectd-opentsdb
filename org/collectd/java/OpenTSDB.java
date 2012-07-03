@@ -83,31 +83,31 @@ public class OpenTSDB implements CollectdWriteInterface,
         pluginInstance = vl.getPluginInstance();
         type           = vl.getType();
         typeInstance   = vl.getTypeInstance();
-        /* OpenTSDB metrics info
+	//OpenTSDB metrics info
 	//see syslog in /var/log
-           Collectd.logInfo("*"+plugin);
-           Collectd.logInfo("**"+pluginInstance);
-           Collectd.logInfo("***"+type);
-           Collectd.logInfo("****"+typeInstance); */ 
+	//Collectd.logInfo("*"+plugin);
+	//Collectd.logInfo("**"+pluginInstance);
+        //Collectd.logInfo("***found null"+type);
+	//Collectd.logInfo("****"+typeInstance); 
         // FIXME: refactor to switch?
-        if ( plugin != null && !plugin.isEmpty() ) {
+	  if ( (plugin != null) && (!plugin.isEmpty())) {
             parts.add(plugin);
-        }
-        if ( pluginInstance != null && !plugin.isEmpty() ) {
-            parts.add(pluginInstance);
-        }
-        if ( type != null ) {
+	      }
+	      if ( (pluginInstance != null) && (!plugin.isEmpty() )) {
+	      parts.add(pluginInstance);
+	        }
+	        if ( type != null ) {
             parts.add(type);
-        }
-        if ( typeInstance != null && !plugin.isEmpty() ) {
-            parts.add(typeInstance);
-        }
+	      }
+		if ((typeInstance != null) && (!plugin.isEmpty()) ) {
+	       parts.add(typeInstance);
+	         }
 
-        pointName = ds.get(i).getName();
-        if (!pointName.equals("value")) {
-          parts.add(pointName);
-        }
-
+	    pointName = ds.get(i).getName();
+	         if (!pointName.equals("value")) {
+	   parts.add(pointName);
+	     }
+	//Collectd.logInfo("*****"+pointName);
         name = join(parts, ".");
 
         sb.append(name).append(' ');
@@ -131,18 +131,21 @@ public class OpenTSDB implements CollectdWriteInterface,
 
         // Send to OpenTSDB
         _out.println(output);
-	//	Collectd.logInfo("*****"+output);
+	Collectd.logInfo("******"+output);
+               
     }
 
     return(0);
   }
 
   public static String join(Collection<String> s, String delimiter) {
+      String tmp;
       StringBuffer buffer = new StringBuffer();
       Iterator<String> iter = s.iterator();
       while (iter.hasNext()) {
-          buffer.append(iter.next());
-          if (iter.hasNext()) {
+	  tmp = iter.next();
+	   buffer.append(tmp);
+	   if (iter.hasNext() && !tmp.isEmpty()) {
               buffer.append(delimiter);
           }
       }
