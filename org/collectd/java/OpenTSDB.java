@@ -122,7 +122,7 @@ public class OpenTSDB implements CollectdWriteInterface,
 
         // Host
         String host = vl.getHost();
-        sb.append("vm=").append(host).append(" ");
+        sb.append("host=").append(host).append(" ");
 
         // Meta
 	// sb.append("source=collectd");
