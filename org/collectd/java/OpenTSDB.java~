@@ -78,30 +78,34 @@ public class OpenTSDB implements CollectdWriteInterface,
                   plugin, pluginInstance,
                   type, typeInstance;
         ArrayList<String> parts = new ArrayList<String>();
-        ArrayList<String> tags = new ArrayList<String>();
 
         plugin         = vl.getPlugin();
         pluginInstance = vl.getPluginInstance();
         type           = vl.getType();
         typeInstance   = vl.getTypeInstance();
+        /* OpenTSDB metrics info
+	//see syslog in /var/log
+           Collectd.logInfo("*"+plugin);
+           Collectd.logInfo("**"+pluginInstance);
+           Collectd.logInfo("***"+type);
+           Collectd.logInfo("****"+typeInstance); */ 
         // FIXME: refactor to switch?
-    	  if ( (plugin != null) && (!plugin.isEmpty())) {
+        if ( plugin != null && !plugin.isEmpty() ) {
             parts.add(plugin);
-            if ( pluginInstance != null && !pluginInstance.isEmpty() ) {
-                tags.add(plugin + "_instance=" + pluginInstance);
-            }
-            if ( type != null && !type.isEmpty()) {
-                tags.add(plugin + "_type=" + type);
-            }
-            if ( typeInstance != null && !typeInstance.isEmpty() ) {
-                tags.add(plugin + "_type_instance=" + typeInstance);
-            }
+        }
+        if ( pluginInstance != null && !plugin.isEmpty() ) {
+            parts.add(pluginInstance);
+        }
+        if ( type != null ) {
+            parts.add(type);
+        }
+        if ( typeInstance != null && !plugin.isEmpty() ) {
+            parts.add(typeInstance);
+        }
 
-            pointName = ds.get(i).getName();
-            if (!pointName.equals("value")) {
-              // Collectd.logInfo("pointName: " + pointName);
-              tags.add(plugin + "_point=" + pointName);
-            }
+        pointName = ds.get(i).getName();
+        if (!pointName.equals("value")) {
+          parts.add(pointName);
         }
 
         name = join(parts, ".");
@@ -121,30 +125,24 @@ public class OpenTSDB implements CollectdWriteInterface,
         sb.append("host=").append(host).append(" ");
 
         // Meta
-	// sb.append("source=collectd");
-
-        sb.append(" ").append(join(tags, " "));
+        sb.append("source=collectd");
 
         String output = sb.toString();
 
         // Send to OpenTSDB
-        // Collectd.logInfo(output);
         _out.println(output);
-	Collectd.logInfo("******"+output);
-               
+	//	Collectd.logInfo("*****"+output);
     }
 
     return(0);
   }
 
   public static String join(Collection<String> s, String delimiter) {
-      String tmp;
       StringBuffer buffer = new StringBuffer();
       Iterator<String> iter = s.iterator();
       while (iter.hasNext()) {
-	  tmp = iter.next();
-	   buffer.append(tmp);
-	   if (iter.hasNext() && !tmp.isEmpty()) {
+          buffer.append(iter.next());
+          if (iter.hasNext()) {
               buffer.append(delimiter);
           }
       }
